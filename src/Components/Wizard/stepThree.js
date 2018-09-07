@@ -9,8 +9,8 @@ class stepThree extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mortgage: "",
-      rent: ""
+      mortgage: 0,
+      rent: 0
     };
   }
 

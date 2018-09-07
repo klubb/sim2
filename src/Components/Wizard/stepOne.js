@@ -6,14 +6,14 @@ import {connect} from 'react-redux'
 
 
 class stepOne extends Component {
-    constructor(props) {
+    constructor(props){
       super(props);
       this.state = {
         name: "",
         address: "",
         city: "",
         state: "",
-        zip: ""
+        zip: 0
       };
     }
 
