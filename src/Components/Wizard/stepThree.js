@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { step3, updateMortgage, updateRent } from "../../ducks/reducer";
+import { step3} from "../../ducks/reducer";
 import { connect } from "react-redux";
 import { cancel } from "../../ducks/reducer";
 
@@ -14,45 +14,68 @@ class stepThree extends Component {
     };
   }
 
+  componentDidMount() {
+    const { mortgage, rent } = this.props;
+    this.setState({
+      mortgage,
+      rent
+    });
+  }
+
+  handleMortgage = e => {
+    this.setState({
+      mortgage: e.target.value
+    });
+  };
+
+  handleRent = e => {
+    this.setState({
+      rent: e.target.value
+    });
+  };
+
   createPost = () => {
+    const { name, address, city, state, zip, img } = this.props;
     axios
       .post("/api/house", {
-        name: this.props.name,
-        address: this.props.address,
-        city: this.props.city,
-        state: this.props.state,
-        zip: this.props.zip,
-        img: this.props.img,
+        name,
+        address,
+        city,
+        state,
+        zip,
+        img,
         mortgage: this.state.mortgage,
         rent: this.state.rent
       })
       .then(() => {
-        // {this.props.cancel}
+        return this.props.history.push("/");
       });
   };
 
   render() {
-    // const { name, address, city, state, zip, img, mortgage, rent } = this.props;
-    console.log(this.props);
-    // console.log(this.state)
+    const { step3, cancel } = this.props;
+
     return (
       <div>
         <input
-            type='number'
-          onChange={e => this.props.updateMortgage(e.target.value)}
+          type="number"
+          onChange={this.handleMortgage}
           placeholder="monthly mortgage amount"
         />
         <input
-            type='number'
-          onChange={e => this.props.updateRent(e.target.value)}
+          type="number"
+          onChange={this.handleRent}
           placeholder="desired monthly rent"
         />
 
         <Link to="/wizard/step2">
-          <button> Previous Step </button>
+          <button onClick={() => step3(this.state.mortgage, this.state.rent)}> Previous Step </button>
         </Link>
         <Link to="/">
-          <button onClick={this.createPost}>Complete</button>
+          <button onClick={() => {
+            this.createPost()
+            cancel()
+          }}>Complete</button>
         </Link>
       </div>
     );
@@ -60,13 +83,20 @@ class stepThree extends Component {
 }
 
 function mapStateToProps(state) {
+  const {name, address, city, zip, img, mortgage, rent} = state
   return {
-    mortgage: state.mortgage,
-    rent: state.rent
+    name,
+    address,
+    city,
+    state: state.state,
+    zip,
+    img,
+    mortgage, 
+    rent
   };
 }
 
 export default connect(
   mapStateToProps,
-  { updateMortgage, updateRent }
+  { step3, cancel}
 )(stepThree);

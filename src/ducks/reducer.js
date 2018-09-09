@@ -1,150 +1,76 @@
 // import { Reducer } from "../../node_modules/redux";
 
-
 const initialState = {
-name: '',
-address: '',
-city: '',
-state: '',
-zip: 0,
-img: '',
-mortgage: 0,
-rent: 0
+  name: "",
+  address: "",
+  city: "",
+  state: "",
+  zip: 0,
+  img: "",
+  mortgage: 0,
+  rent: 0
+};
 
-}
+const UPDATE_STEP1 = "UPDATE_STEP1",
+  UPDATE_STEP2 = "UPDATE_STEP2",
+  UPDATE_STEP3 = "UPDATE_STEP3";
 
-const UPDATE_NAME = 'UPDATE_NAME'
-const UPDATE_ADDRESS = 'UPDATE_ADDRESS'
-const UPDATE_CITY = 'UPDATE_CITY'
-const UPDATE_STATE = 'UPDATE_STATE'
-const UPDATE_ZIP = 'UPDATE_ZIP'
-const UPDATE_IMG = 'UPDATE_IMG'
-const UPDATE_MORTGAGE = 'UPDATE_MORTGAGE'
-const UPDATE_RENT = 'UPDATE RENT'
-const CANCEL = 'CANCEL'
+const CANCEL = "CANCEL";
 
 function reducer(state = initialState, action) {
-    switch(action.type) {
-        case UPDATE_NAME:
-            return Object.assign({}, state, {name: action.payload})
-        
-        case UPDATE_ADDRESS:
-            return Object.assign({}, state, {address: action.payload})
+  switch (action.type) {
+    case UPDATE_STEP1:
+      return Object.assign({}, state, {
+        name: action.payload.name,
+        address: action.payload.address,
+        city: action.payload.city,
+        state: action.payload.state,
+        zip: action.payload.zip
+      });
 
-        case UPDATE_CITY:
-            return Object.assign({}, state, {city: action.payload})
+    case UPDATE_STEP2:
+      return Object.assign({}, state, { img: action.payload });
 
-        case UPDATE_STATE:
-            return Object.assign({}, state, {state: action.payload})
+    case UPDATE_STEP3:
+      return Object.assign({}, state, {
+        mortgage: action.payload.mortgage,
+        rent: action.payload.rent
+      });
 
-        case UPDATE_ZIP:
-            return Object.assign({}, state, {zip: action.payload})
+    case CANCEL:
+      return initialState;
 
-        case UPDATE_IMG: 
-            return Object.assign({}, state, {img: action.payload})
-
-        case UPDATE_MORTGAGE: 
-            return Object.assign({}, state, {mortgage: action.payload})
-
-        case UPDATE_RENT: 
-            return Object.assign({}, state, {rent: action.payload})
-
-        case CANCEL: 
-            return initialState
-
-
-        default: return state
-    }
+    default:
+      return state;
+  }
 }
 
-
-// export function step1(name, address, city, state, zip) {
-//     return {
-//     type: UPDATE_NAME, UPDATE_ADDRESS, UPDATE_CITY, UPDATE_STATE, UPDATE_ZIP,
-//     payload: name, address, city, state, zip
-//     }
-// }
-
-
-
-export function updateName(name) {
-    return {
-        type: UPDATE_NAME,
-        payload: name
-    }
+export function step1(name, address, city, state, zip) {
+  return {
+    type: UPDATE_STEP1,
+    payload: { name, address, city, state, zip }
+  };
 }
 
-export function updateAddress(address) {
-    return {
-        type: UPDATE_ADDRESS,
-        payload: address
-    }
+export function step2(img) {
+  return {
+    type: UPDATE_STEP2,
+    payload: img
+  };
 }
 
-export function updateCity(city) {
-    return {
-        type: UPDATE_CITY,
-        payload: city
-    }
+export function step3(mortgage, rent) {
+  return {
+    type: UPDATE_STEP3,
+    payload: { mortgage, rent }
+  };
 }
 
-export function updateState(state) {
-    return {
-        type: UPDATE_STATE,
-        payload: state
-    }
+export function cancel() {
+  return {
+    type: CANCEL,
+    payload: initialState
+  };
 }
 
-export function updateZip(zip) {
-    return {
-        type: UPDATE_ZIP,
-        payload: zip
-    }
-}
-
-export function updateImg(img) {
-    return {
-        type: UPDATE_IMG,
-        payload: img
-    }
-}
-
-export function updateMortgage(mortgage) {
-    return {
-        type: UPDATE_MORTGAGE,
-        payload: mortgage
-    }
-}
-
-
-export function updateRent(rent) {
-    return {
-        type: UPDATE_RENT,
-        payload: rent
-    }
-}
-
-// export function step2(img){
-//     return {
-//         type: UPDATE_IMG,
-//         payload: img
-//     }
-// }
-
-// export function step3(name, address, city, state, zip, img, mortgage, rent) {
-//     return {
-//         type: UPDATE_NAME, UPDATE_ADDRESS, UPDATE_CITY, UPDATE_STATE, UPDATE_ZIP, UPDATE_IMG, UPDATE_MORTGAGE, UPDATE_RENT,
-//         payload: name, address, city, state, zip, img, mortgage, rent
-
-//     }
-// }
-
-export function cancel(){
-    return {
-        type: CANCEL,
-        payload: initialState
-    }
-
-}
-
-export default reducer
+export default reducer;
